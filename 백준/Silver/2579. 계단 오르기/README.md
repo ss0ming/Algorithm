@@ -4,7 +4,7 @@
 
 ### 성능 요약
 
-메모리: 17804 KB, 시간: 232 ms
+메모리: 14124 KB, 시간: 128 ms
 
 ### 분류
 
@@ -12,7 +12,7 @@
 
 ### 제출 일자
 
-2021년 12월 1일 23:39:25
+2023년 11월 28일 17:01:48
 
 ### 문제 설명
 
@@ -24,7 +24,7 @@
 
 <p>예를 들어 <그림 2>와 같이 시작점에서부터 첫 번째, 두 번째, 네 번째, 여섯 번째 계단을 밟아 도착점에 도달하면 총 점수는 10 + 20 + 25 + 20 = 75점이 된다.</p>
 
-<p style="text-align: center;"><img alt="" src="" style="width: 300px; height: 190px;"></p>
+<p style="text-align: center;"><img alt="" src="https://u.acmicpc.net/f00b6121-1c25-492e-9bc0-d96377c586b0/Screen%20Shot%202021-06-23%20at%203.01.39%20PM.png" style="width: 300px; height: 190px;"></p>
 
 <p style="text-align: center;"><그림 2></p>
 
