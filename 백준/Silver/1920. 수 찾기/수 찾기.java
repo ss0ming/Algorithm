@@ -3,41 +3,53 @@ import java.util.*;
 
 public class Main {
 
+    static List<Integer> list;
+
     public static void main(String[] args) throws Exception {
 
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
 
         int N = Integer.parseInt(br.readLine());
-        long[] arr = new long[N];
-        StringTokenizer st = new StringTokenizer(br.readLine());
+        String l = br.readLine();
+        String[] str = l.split(" ");
+        list = new ArrayList<>();
         for (int i=0; i<N; i++) {
-            arr[i] = Integer.parseInt(st.nextToken());
+            list.add(Integer.parseInt(str[i]));
         }
-        Arrays.sort(arr);
+
+        Collections.sort(list);
 
         int M = Integer.parseInt(br.readLine());
-        st = new StringTokenizer(br.readLine());
+        String l2 = br.readLine();
+        String[] str2 = l2.split(" ");
         for (int i=0; i<M; i++) {
-            System.out.println(checkArr(arr, Integer.parseInt(st.nextToken())));
+            int n = Integer.parseInt(str2[i]);
+            if (checkArr(n)) {
+                System.out.println("1");
+            } else {
+                System.out.println("0");
+            }
         }
+
     }
 
-    public static int checkArr(long[] arr, int n) {
+    public static boolean checkArr(int n) {
         int l = 0;
-        int r = arr.length - 1;
+        int r = list.size() - 1;
         int m = (l + r) / 2;
 
         while (l <= r) {
-            if (arr[m] == n) return 1;
-            else if (arr[m] < n) {
-                l = m+1;
+            if (list.get(m) == n) {
+                return true;
+            } else if (list.get(m) < n) {
+                l = m + 1;
                 m = (l + r) / 2;
-            } else if (arr[m] > n) {
-                r = m-1;
+            } else if (list.get(m) > n) {
+                r = m - 1;
                 m = (l + r) / 2;
             }
-
         }
-        return 0;
+
+        return false;
     }
 }
