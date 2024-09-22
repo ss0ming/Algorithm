@@ -3,12 +3,13 @@ import java.util.*;
 
 public class Main {
 
-    public static int[][] arr;
-    public static int[] dx = {0, 0, 1, -1};
-    public static int[] dy = {1, -1, 0, 0};
-    public static int N;
-    public static int M;
-    public static int[][] dist;
+    static int N;
+    static int M;
+    static int[][] arr;
+    static boolean[][] visited;
+    static int[] dx = {0, 0, -1, 1};
+    static int[] dy = {-1, 1, 0, 0};
+    static int answer = 0;
 
     public static void main(String[] args) throws Exception {
 
@@ -17,49 +18,50 @@ public class Main {
 
         N = Integer.parseInt(st.nextToken());
         M = Integer.parseInt(st.nextToken());
+
         arr = new int[N][M];
-        dist = new int[N][M];
+        visited = new boolean[N][M];
 
         for (int i=0; i<N; i++) {
-            String[] input = br.readLine().split("");
+            String[] strs = br.readLine().split("");
             for (int j=0; j<M; j++) {
-                arr[i][j] = Integer.parseInt(input[j]);
+                arr[i][j] = Integer.parseInt(strs[j]);
             }
         }
 
-        boolean[][] visited = new boolean[N][M];
-        visited[0][0] = true;
-        dist[0][0] = 1;
-        bfs(0, 0, visited);
+        bfs();
 
-        System.out.println(dist[N-1][M-1]);
+        System.out.println(answer);
     }
 
-    public static void bfs (int n, int m, boolean[][] visited) {
+    public static void bfs() {
         Queue<int[]> q = new LinkedList<>();
-        q.add(new int[] {n, m});
+        q.add(new int[]{0, 0, 1});
+        visited[0][0] = true;
 
-        while(!q.isEmpty()) {
+        while (!q.isEmpty()) {
             int[] now = q.poll();
-            int nowX = now[0];
-            int nowY = now[1];
 
-            for(int i=0; i<4; i++) {
-                int nextX = nowX + dx[i];
-                int nextY = nowY + dy[i];
+            if (now[0] == N-1 && now[1] == M-1) {
+                answer = now[2];
+                break;
+            }
+            for (int i=0; i<4; i++) {
+                int nx = now[0] + dx[i];
+                int ny = now[1] + dy[i];
 
-                if (!isPromising(nextX, nextY, visited)) continue;
-
-                q.add(new int[] {nextX, nextY});
-                dist[nextX][nextY] = dist[nowX][nowY] + 1;
-                visited[nextX][nextY] = true;
+                if (isPromising(nx, ny) && arr[nx][ny] == 1 && !visited[nx][ny]) {
+                    visited[nx][ny] = true;
+                    q.add(new int[]{nx, ny, now[2] + 1});
+                }
             }
         }
+
+
     }
 
-    public static boolean isPromising(int n, int m, boolean[][] visited) {
-        if (n < 0 || n >= N || m < 0 || m >= M) return false;
-        if (arr[n][m] == 0) return false;
-        return !visited[n][m];
+    public static boolean isPromising(int x, int y) {
+        return x >= 0 && x < N && y >= 0 && y < M;
     }
+
 }
