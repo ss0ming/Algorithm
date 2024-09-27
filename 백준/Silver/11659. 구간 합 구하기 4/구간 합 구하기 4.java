@@ -1,26 +1,27 @@
+import java.io.*;
 import java.util.*;
 
 public class Main {
-    public static void main(String[] args) {
-        Scanner sc = new Scanner(System.in);
-        int N = sc.nextInt();
-        int M = sc.nextInt();
 
-        int[] arr = new int[N+1];
-        int sum = 0;
+    public static void main(String[] args) throws Exception {
 
-        for (int i=1; i<N+1; i++) {
-            sum += sc.nextInt();
-            arr[i] = sum;
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        StringTokenizer st = new StringTokenizer(br.readLine());
+
+        int N = Integer.parseInt(st.nextToken());
+        int M = Integer.parseInt(st.nextToken());
+        int[] dp = new int[N+1];
+
+        st = new StringTokenizer(br.readLine());
+        for (int i=1; i<=N; i++) {
+            dp[i] = Integer.parseInt(st.nextToken()) + dp[i-1];
         }
 
         for (int i=0; i<M; i++) {
-            int from = sc.nextInt();
-            int to = sc.nextInt();
-
-            int result = arr[to] - arr[from-1];
-
-            System.out.println(result);
+            st = new StringTokenizer(br.readLine());
+            int a = Integer.parseInt(st.nextToken());
+            int b = Integer.parseInt(st.nextToken());
+            System.out.println(dp[b] - dp[a-1]);
         }
     }
 }
