@@ -1,21 +1,38 @@
-import java.util.*;
-
 class Solution {
     public String[] solution(int n, int[] arr1, int[] arr2) {
         String[] answer = new String[n];
+        String[] strs1 = new String[n];
+        String[] strs2 = new String[n];
         
         for (int i=0; i<n; i++) {
-            String a = String.format("%0" + Long.toString(n) + "d", Long.parseLong(Long.toString(arr1[i], 2)));
-            String b = String.format("%0" + Long.toString(n) + "d", Long.parseLong(Long.toString(arr2[i], 2)));
-            
-            String str = "";
+            strs1[i] = fillZero(Integer.toString(arr1[i], 2), n);
+            strs2[i] = fillZero(Integer.toString(arr2[i], 2), n);
+        }
+        
+        for (int i=0; i<n; i++) {
+            String s = "";
             for (int j=0; j<n; j++) {
-                if (a.charAt(j) == '0' && b.charAt(j) == '0') str += " ";
-                else str += "#";
+                if (strs1[i].charAt(j) == '0' && strs2[i].charAt(j) == '0') {
+                    s += " ";
+                } else {
+                    s += "#";
+                }
             }
-            answer[i] = str;
+            answer[i] = s;
         }
         
         return answer;
+    }
+    
+    public static String fillZero(String s, int n) {
+        String res = "";
+    
+        for (int i=0; i<n-s.length(); i++) {
+            res += "0";
+        }
+        
+        res += s;
+        
+        return res;
     }
 }
