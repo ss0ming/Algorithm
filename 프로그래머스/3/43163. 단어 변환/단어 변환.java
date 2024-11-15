@@ -2,38 +2,42 @@ import java.util.*;
 
 class Solution {
     
-    static String t;
-    static int answer = 0;
+    static int answer = 10000;
     
     public int solution(String begin, String target, String[] words) {
         boolean[] visited = new boolean[words.length];
-        t = target;
         
-        dfs(begin, words, visited, 0);
+        dfs(0, begin, visited, target, words);
         
+        if (10000 <= answer) return 0;
         return answer;
     }
     
-    public static void dfs(String now, String[] words, boolean[] visited, int cnt) {
-        if (now.equals(t)) {
-            if (answer == 0) answer = cnt;
-            else answer = Math.min(cnt, answer);
+    public static void dfs(int cnt, String cur, boolean[] visited, String target, String[] words) {
+        if (cur.equals(target)) {
+            answer = Math.min(answer, cnt);
+            return;
         }
         
         for (int i=0; i<words.length; i++) {
-            if (visited[i] || !compareWord(now, words[i])) continue;
-            visited[i] = true;
-            dfs(words[i], words, visited, cnt+1);
-            visited[i] = false;
+            if (!visited[i] && check(cur, words[i])) {
+                visited[i] = true;
+                dfs(cnt+1, words[i], visited, target, words);
+                visited[i] = false;
+            }
         }
     }
     
-    public static boolean compareWord(String s1, String s2) {
+    public static boolean check(String a, String b) {
         int cnt = 0;
-        for (int i=0; i<s1.length(); i++) {
-            if (s1.charAt(i) != s2.charAt(i)) cnt++;
+        for (int i=0; i<a.length(); i++) {
+            if (a.charAt(i) != b.charAt(i)) {
+                cnt++;
+            }
             if (cnt > 1) return false;
         }
-        return true;
+        
+        if (cnt == 1) return true;
+        return false;
     }
 }
