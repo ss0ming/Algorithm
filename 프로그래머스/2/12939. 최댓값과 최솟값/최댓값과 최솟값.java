@@ -1,24 +1,29 @@
+import java.util.*;
+
 class Solution {
     public String solution(String s) {
         String answer = "";
-        String[] nums = s.split(" ");
         
-        int minN = Integer.parseInt(nums[0]);
-        int maxN = Integer.parseInt(nums[0]);
+        String[] arr = s.split(" ");
+        int[] nums = new int[arr.length];
         
-        for (int i=1; i<nums.length; i++) {
-            int curN = Integer.parseInt(nums[i]);
-            if (minN > curN) {
-                minN = curN;
+        for (int i=0; i<nums.length; i++) {
+            nums[i] = Integer.parseInt(arr[i]);
+        }
+        
+        int min = nums[0];
+        int max = nums[0];
+        
+        for (int num : nums) {
+            if (num < min) {
+                min = num;
             }
-            if (maxN < curN) {
-                maxN = curN;
+            if (num > max) {
+                max = num;
             }
         }
         
-        answer += Integer.toString(minN);
-        answer += " ";
-        answer += Integer.toString(maxN);
+        answer += (min + " " + max);
         
         return answer;
     }
