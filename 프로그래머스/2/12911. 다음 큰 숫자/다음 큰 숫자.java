@@ -1,34 +1,35 @@
+import java.util.*;
+
 class Solution {
     public int solution(int n) {
-        int answer = n+1;
+        int nCnt = countOne(n++);
         
-        String s = Integer.toString(n, 2);
-        
-        int cntN = 0;
-        
-        for (int i=0; i<s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == '1') {
-                cntN++;
-            }
-        }
-        
-        int cnt = 0;
         
         while (true) {
-            s = Integer.toString(answer, 2);
-        
-            for (int i=0; i<s.length(); i++) {
-                char c = s.charAt(i);
-                if (c == '1') {
-                    cnt++;
-                }
+            int cnt = countOne(n);
+            
+            if (cnt == nCnt) {
+                break;
             }
-            if (cnt == cntN) break;
-            cnt = 0;
-            answer += 1;
+            n++;
         }
         
-        return answer;
+        return n;
+    }
+    
+    private static int countOne(int n) {
+        int cnt = 0;
+        
+        while(n >= 2) {
+            if (n % 2 == 1) {
+                cnt++;
+            }
+            n /= 2;
+            if (n == 1) {
+                cnt++;
+            }
+        }
+        
+        return cnt;
     }
 }
