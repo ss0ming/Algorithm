@@ -1,23 +1,22 @@
-import java.util.*;
-
 class Solution {
     public int solution(int[] arr) {
-        int answer = leastCommonMultiple(Math.min(arr[0], arr[1]), Math.max(arr[0], arr[1]));
+        int answer = arr[0];
         
-        for (int i=2; i<arr.length; i++) {
-            answer = leastCommonMultiple(Math.min(answer, arr[i]), Math.max(answer, arr[i]));
+        for (int i=1; i<arr.length; i++) {
+            if (answer > arr[i]) {
+                answer = answer * arr[i] / gcd(answer, arr[i]);
+            } else {
+                answer = answer * arr[i] / gcd(arr[i], answer);
+            }
         }
         
         return answer;
     }
     
-    public static int leastCommonMultiple(int a, int b) {
-        int res = a * b;
-        int i = a;
-        while (true) {
-            if (a % i == 0 && b % i == 0) break;
-            i--;
+    private static int gcd(int a, int b) {
+        if (a % b == 0) {
+            return b;
         }
-        return res / i;
+        return gcd(b, a % b);
     }
 }
