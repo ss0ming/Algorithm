@@ -2,25 +2,25 @@ import java.util.*;
 
 class Solution {
     public int[] solution(int n, String[] words) {
-        int[] answer = {0, 0};
-
-        ArrayList<String> list = new ArrayList<String>();
+        int[] answer = new int[2];
+        List<String> checkWord = new ArrayList<>();
+        checkWord.add(words[0]);
         
-        for (int i=0; i<words.length; i++) {
-            if (list.isEmpty()) {
-                list.add(words[i]);
-                continue;
-            }
-            String beforeWord = list.get(list.size()-1);
-            if (list.contains(words[i]) || beforeWord.charAt(beforeWord.length()-1) != words[i].charAt(0) || words[i].length() == 1) {
-                int playerN = i % n+1;
-                if (playerN == 0) playerN = n;
-                
-                answer[0] = playerN;
-                answer[1] = i / n + 1;
+        for (int i=1; i<words.length; i++) {
+            String beforeWord = words[i-1];
+            String curWord = words[i];
+            
+            if (beforeWord.charAt(beforeWord.length()-1) != curWord.charAt(0)) {
+                answer[0] = (i+1) % n == 0 ? n : (i+1) % n;
+                answer[1] = (i+1) % n == 0 ? (i+1) / n: (i+1) / n + 1;
+                break;
+            } else if (checkWord.contains(curWord)) {
+                answer[0] = (i+1) % n == 0 ? n : (i+1) % n;
+                answer[1] = (i+1) % n == 0 ? (i+1) / n : (i+1) / n + 1;
                 break;
             }
-            list.add(words[i]);
+            
+            checkWord.add(curWord);
         }
 
         return answer;
