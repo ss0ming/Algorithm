@@ -5,16 +5,26 @@ class Solution {
         int answer = 0;
         
         Arrays.sort(people);
-        int left = 0;
-        int right = people.length - 1;
         
-        while (left <= right) {
-            if (people[left] + people[right] <= limit) {
-                left += 1;
-                right -= 1;
-            } else {
-                right -= 1;
+        int i = 0;
+        int j = people.length-1;
+        
+        while (i <= j) {
+            if (i == j) {
+                answer++;
+                break;
             }
+            
+            int p1 = people[i];
+            int p2 = people[j];
+            
+            if (p1 + p2 <= limit) {
+                i++;
+                j--;
+            } else {
+                j--;
+            }
+            
             answer++;
         }
         
