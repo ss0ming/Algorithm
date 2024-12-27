@@ -3,29 +3,22 @@ import java.util.*;
 class Solution {
     public int solution(String[][] clothes) {
         int answer = 1;
-        
-        Map<String, Integer> map = new HashMap<>();
+        Map<String, Integer> types = new HashMap<>();
         
         for (int i=0; i<clothes.length; i++) {
-            if (map.containsKey(clothes[i][1])) {
-                map.replace(clothes[i][1], map.get(clothes[i][1]) + 1);
-                System.out.println("flag");
+            String clothesType = clothes[i][1];
+            
+            if (types.containsKey(clothesType)) {
+                types.replace(clothesType, types.get(clothesType) + 1);
             } else {
-                map.put(clothes[i][1], 1);
+                types.put(clothesType, 1);
             }
         }
         
-        if (map.size() == 1) {
-            answer = clothes.length;
-        } else {
-            for (String key : map.keySet()) {
-                Integer value = map.get(key);
-                System.out.println(value);
-                answer *= (value + 1);
-            }
-            answer -= 1;
+        for (String t : types.keySet()) {
+            answer *= (types.get(t) + 1);
         }
         
-        return answer;
+        return answer-1;
     }
 }
