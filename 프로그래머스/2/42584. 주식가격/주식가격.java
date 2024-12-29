@@ -3,21 +3,28 @@ import java.util.*;
 class Solution {
     public int[] solution(int[] prices) {
         int[] answer = new int[prices.length];
-        Stack<Integer> stack = new Stack();
+        Queue<Integer> priceQueue = new LinkedList<>();
 
-        for (int i = 0; i < prices.length; i++) {
-            while (!stack.isEmpty() && prices[i] < prices[stack.peek()]) {
-                answer[stack.peek()] = i - stack.peek();
-                stack.pop();
+        for (int price : prices) {
+            priceQueue.add(price);
+        }
+
+        int number = 0;
+        while (priceQueue.peek() != null) {
+            int value = priceQueue.poll();
+
+            answer[number] = 0;
+
+            for (Integer integer : priceQueue) {
+                answer[number]++;
+                if (value > integer) {
+                    break;
+                }
             }
-            stack.push(i);
+
+            number++;
         }
 
-        while (!stack.isEmpty()) {
-            answer[stack.peek()] = prices.length - stack.peek() - 1;
-            stack.pop();
-        }
-        
         return answer;
     }
 }
