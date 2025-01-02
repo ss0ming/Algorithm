@@ -1,10 +1,10 @@
 # [level 2] 전화번호 목록 - 42577 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42577) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/42577#qna) 
 
 ### 성능 요약
 
-메모리: 96.7 MB, 시간: 421.90 ms
+메모리: 98.3 MB, 시간: 320.62 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 03월 23일 20:07:49
+2025년 01월 02일 21:22:49
 
 ### 문제 설명
 
