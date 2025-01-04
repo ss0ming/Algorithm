@@ -1,18 +1,27 @@
+import java.util.*;
+
 class Solution {
+    
     int solution(int[][] land) {
+        
         int answer = 0;
 
-        for (int i=1; i<land.length; i++) {
-            land[i][0] += Math.max(land[i-1][1], Math.max(land[i-1][2], land[i-1][3]));
-            land[i][1] += Math.max(land[i-1][0], Math.max(land[i-1][2], land[i-1][3]));
-            land[i][2] += Math.max(land[i-1][0], Math.max(land[i-1][1], land[i-1][3]));
-            land[i][3] += Math.max(land[i-1][0], Math.max(land[i-1][1], land[i-1][2]));
+        int dp[][] = new int[land.length + 1][4];
+
+        for(int i = 1; i <= land.length; i++) {
+            for(int j = 0; j < 4; j++){
+                for(int k = 0; k < 4; k++){
+                    if(k == j){
+                        continue;
+                    }
+
+                    dp[i][j] = Math.max(dp[i][j], land[i - 1][j] + dp[i - 1][k]);
+
+                    answer = Math.max(answer, dp[i][j]);
+                }
+            }
         }
 
-        for (int i=0; i<4; i++) {
-            answer = Math.max(answer, land[land.length-1][i]);
-        }
-        
         return answer;
     }
 }

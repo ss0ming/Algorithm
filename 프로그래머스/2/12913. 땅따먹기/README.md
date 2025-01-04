@@ -1,10 +1,10 @@
 # [level 2] 땅따먹기 - 12913 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12913) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/12913#qna) 
 
 ### 성능 요약
 
-메모리: 85.7 MB, 시간: 19.38 ms
+메모리: 87.9 MB, 시간: 22.68 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 03월 14일 23:50:39
+2025년 01월 04일 12:23:23
 
 ### 문제 설명
 
