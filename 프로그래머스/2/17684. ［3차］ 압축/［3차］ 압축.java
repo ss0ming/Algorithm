@@ -2,38 +2,34 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String msg) {
-        ArrayList<Integer> list = new ArrayList<>();
-		HashMap<String, Integer> map = new HashMap<>();
-
-		for(int i = 1; i < 27; i++) {
-			char alpha = (char) (64+i);
-			map.put(String.valueOf(alpha), i);
-		}    
-
-		for(int i = 0; i < msg.length(); i++) {
-			String key = msg.charAt(i) + "";
-			int index = i + 1;
-
-			while(index <= msg.length()) {
-				if(index == msg.length()) {
-					list.add(map.get(msg.substring(i)));
-					i = index;
-					break;
-				}
-
-				String nextKey = msg.substring(i, index+1);
-
-				if(map.containsKey(nextKey)) { 
-					index++;
-				} else { 
-					key = msg.substring(i, index);
-					list.add(map.get(key)); 
-					map.put(nextKey, map.size()+1); 
-					i = index-1;
-					break;
-				}
-			}
-		}
-        return list.stream().mapToInt(i -> i.intValue()).toArray();
+        List<Integer> answer = new ArrayList<>();
+        Map<String, Integer> dictionary = new HashMap<>();
+        int idx = 0;
+        String tmp = "";
+        
+        resetDictionary(dictionary);
+        
+        while (idx < msg.length()) {
+            // 다음 글자 붙이기
+            tmp += msg.charAt(idx++);
+            
+            // 만약 다음 글자를 붙인 tmp가 사전에 없으면
+            // tmp를 사전에 추가하고 붙이기 전에 글자의 사전 번호를 answer에 추가
+            if (!dictionary.containsKey(tmp)) {
+                dictionary.put(tmp, dictionary.size()+1);
+                answer.add(dictionary.get(tmp.substring(0, tmp.length()-1)));
+                tmp = Character.toString(msg.charAt(idx-1));
+            }
+            
+        }
+        answer.add(dictionary.get(tmp));
+        
+        return answer.stream().mapToInt(Integer::intValue).toArray();
+    }
+    
+    private static void resetDictionary(Map<String, Integer> dictionary) {
+        for (int i=0; i<26; i++) {
+            dictionary.put(Character.toString((char) ('A' + i)), i+1);
+        }
     }
 }
