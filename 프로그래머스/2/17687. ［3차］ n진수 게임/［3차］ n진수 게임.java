@@ -2,21 +2,22 @@ class Solution {
     public String solution(int n, int t, int m, int p) {
         String answer = "";
         
-        String strs = "";
-        int k = 0;
+        int len = 0;
+        int tube = p;
         
-        while (strs.length() <= t * m) {
-            strs += Integer.toString(k, n);
-            k++;
+        for (int i=0; i<=t*m; i++) {
+            String tmp = Integer.toString(i, n).toUpperCase();
+            
+            for (int j=0; j<tmp.length(); j++) {
+                len++;
+                if (answer.length() < t && len == tube) {
+                    answer += tmp.charAt(j);
+                    tube += m;
+                }
+            }
+
         }
         
-        p -= 1;
-        
-        while (t != answer.length()) {
-            answer += strs.charAt(p);
-            p += m;
-        }
-        
-        return answer.toUpperCase();
+        return answer;
     }
 }
