@@ -2,30 +2,29 @@ import java.util.*;
 
 class Solution {
     public int[] solution(String s) {
-        int[] answer = {};
+        List<String[]> tuples = new ArrayList<>();
         
         s = s.substring(2, s.length()-2);
+        String[] splitS = s.split("\\},\\{");
         
-        String[] strs = s.split("\\},\\{");
-        Arrays.sort(strs, new Comparator<String>(){
-            public int compare(String o1, String o2){
-                
-                return Integer.compare(o1.length(), o2.length());
-            }
-        });
-        
-        List<Integer> list = new LinkedList<>();
-        
-        for(String str : strs) {
-            String[] nums = str.split(",");
-            for (String n : nums) {
-                int num = Integer.parseInt(n);
-                if (list.contains(num)) continue;
-                list.add(num);
-            }
+        for (int i=0; i<splitS.length; i++) {
+            tuples.add(splitS[i].split(","));
         }
         
-        answer = list.stream().mapToInt(Integer::intValue).toArray();
+        tuples.sort(Comparator.comparingInt(arr -> arr.length));
+        int[] answer = new int[tuples.size()];
+        Set<String> set = new HashSet<>();
+        
+        int idx = 0;
+        for (int t=0; t<tuples.size(); t++) {
+            String[] tuple = tuples.get(t);
+            for (int i=0; i<tuple.length; i++) {
+                if (!set.contains(tuple[i])) {
+                    answer[idx++] = Integer.parseInt(tuple[i]);
+                    set.add(tuple[i]);
+                }
+            }
+        }
         
         return answer;
     }
