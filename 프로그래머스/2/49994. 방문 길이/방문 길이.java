@@ -1,47 +1,58 @@
 import java.util.*;
 
 class Solution {
-    
-    static int[] dx = {0, 0, 1, -1};
-    static int[] dy = {1, -1, 0, 0};
-    
     public int solution(String dirs) {
+        int answer = 0;
         
-        Map<Character, Integer> map = new HashMap<>();
-        map.put('U', 0);
-        map.put('D', 1);
-        map.put('R', 2);
-        map.put('L', 3);
+        boolean[][] board = new boolean[11][11];
+        List<String> list = new ArrayList<>();
         
-        Set<String> set = new HashSet<>();
-        
-        int nowX = 0;
-        int nowY = 0;
+        int x = 5;
+        int y = 5;
         
         for (int i=0; i<dirs.length(); i++) {
-            int nextX = nowX + dx[map.get(dirs.charAt(i))];
-            int nextY = nowY + dy[map.get(dirs.charAt(i))];
+            Character c = dirs.charAt(i);
+            int nx = x;
+            int ny = y;
             
-            if (nextX < -5 || nextX > 5 || nextY < -5 || nextY > 5) continue;
+            if (c == 'U') {
+                nx -= 1;
+            } else if (c == 'D') {
+                nx += 1;
+            } else if (c == 'R') {
+                ny += 1;
+            } else if (c == 'L') {
+                ny -= 1;
+            }
             
-            set.add(move(nowX, nowY, nextX, nextY));
-            set.add(move(nextX, nextY, nowX, nowY));
+            if (!isPromising(nx, ny)) continue;
             
-            nowX = nextX;
-            nowY = nextY;
+            String tmp = intToStr(x, y, nx, ny);
+            if (!list.contains(tmp)) {
+                answer++;
+                list.add(tmp);
+                list.add(intToStr(nx, ny, x, y));
+            }
+            
+            x = nx;
+            y = ny;
         }
         
-        System.out.println(set.size());
-        
-        return set.size() / 2;
+        return answer;
     }
     
-    public static String move(int x, int y, int x2, int y2) {
-        String s = Integer.toString(x);
-        s += Integer.toString(y);
-        s += Integer.toString(x2);
-        s += Integer.toString(y2);
+    private static String intToStr(int i1, int i2, int i3, int i4) {
+        String tmp = "";
         
-        return s;
+        tmp += Integer.toString(i1);
+        tmp += Integer.toString(i2);
+        tmp += Integer.toString(i3);
+        tmp += Integer.toString(i4);
+        
+        return tmp;
+    }
+    
+    private static boolean isPromising (int x, int y) {
+        return x >= 0 && x < 11 && y >= 0 && y < 11;
     }
 }
