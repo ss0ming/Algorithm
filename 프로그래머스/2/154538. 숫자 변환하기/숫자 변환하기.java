@@ -2,32 +2,35 @@ import java.util.*;
 
 class Solution {
     public int solution(int x, int y, int n) {
-        int answer = -1;
-        
         int[] dp = new int[y+1];
+        Arrays.fill(dp, 1_000_000);
+        dp[x] = 0;
+        int idx = x;
         
-        for (int i=x; i<y+1; i++) {
-            
-            if (i != x && dp[i] == 0) {
-                dp[i] = -1;
+        while (idx <= y) {
+            if (dp[idx] == 1_000_000) {
+                idx++;
                 continue;
             }
-
-            if (i*2 <= y) {
-                if (dp[i*2] == 0) dp[i*2] = dp[i] + 1;
-                else dp[i*2] = Math.min(dp[i] + 1, dp[i * 2]);
-            }
-            if (i*3 <= y) {
-                if (dp[i*3] == 0) dp[i*3] = dp[i] + 1;
-                else dp[i*3] = Math.min(dp[i] + 1, dp[i * 3]);
-            }
-            if (i+n <= y) {
-                if (dp[i+n] == 0) dp[i+n] = dp[i] + 1;
-                else dp[i+n] = Math.min(dp[i] + 1, dp[i+n]);
-            }
             
+            if (check(idx+n, y)) {
+                dp[idx+n] = Math.min(dp[idx] + 1, dp[idx+n]);
+            } 
+            if (check(idx*2, y)) {
+                dp[idx*2] = Math.min(dp[idx] + 1, dp[idx*2]);
+            }
+            if (check(idx*3, y)) {
+                dp[idx*3] = Math.min(dp[idx] + 1, dp[idx*3]);
+            }
+            idx++;
         }
         
+        if (dp[y] == 1_000_000) return -1;
+        
         return dp[y];
+    }
+    
+    private static boolean check(int n, int y) {
+        return n <= y;
     }
 }
