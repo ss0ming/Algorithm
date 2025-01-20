@@ -1,28 +1,38 @@
-import java.util.*;
-
 class Solution {
+    
+    static int answer = 0;
+    
     public int solution(int n, int k) {
-        int answer = 0;
+        String nk = Integer.toString(n, k);
+        String tmp = "";
         
-        String s = Integer.toString(n, k);
-        String[] strs = s.split("0");
-        
-        for (int i=0; i<strs.length; i++) {
-            if (strs[i].equals("")) continue;
-            long now = Long.parseLong(strs[i]);
-            if (isPrime(now)) answer++;
+        for (int i=0; i<nk.length(); i++) {
+            Character c = nk.charAt(i);
+            if (c == '0') {
+                check(tmp);
+                tmp = "";
+            } else {
+                tmp += c;
+            }
         }
+        check(tmp);
         
         return answer;
     }
     
-    public static boolean isPrime(long n) {
-        if (n == 1) return false;
-        if (n == 2) return true;
+    private static void check(String s) {
+        if (s.equals("") || s.equals("1")) return;
+        long n = Long.parseLong(s);
         
-        for (int i=2; i<=(int)Math.sqrt(n); i++) {
-            if (n % i == 0) return false;
+        if (n <= 3) {
+            answer++;
+            return;
+        } 
+        
+        for (int i=2; i<=Math.sqrt(n); i++) {
+            if (n % i == 0) return;
         }
-        return true;
+        
+        answer++;
     }
 }
