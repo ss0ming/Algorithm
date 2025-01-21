@@ -3,24 +3,28 @@ import java.util.*;
 class Solution {
     public long solution(int n, int[] works) {
         long answer = 0;
-        PriorityQueue<Long> pq = new PriorityQueue<>(Collections.reverseOrder());
         
-        for (int i=0; i<works.length; i++) {
-            pq.add((long) works[i]);
+        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        
+        for (int work : works) {
+            pq.add(work);
         }
         
-        for (int i=0; i<n; i++) {
-            long work = pq.poll();
-            if (work - 1 <= 0) {
-                pq.add((long) 0);
-            } else {
-                pq.add(work - 1);
+        while (n > 0) {
+            if (pq.isEmpty()) {
+                break;
             }
+            int tmp = pq.poll();
+            if (tmp-1 > 0) {
+                pq.offer(tmp-1);
+            }
+            n--;
         }
         
-        for (int i=0; i<works.length; i++) {
-            long work = pq.poll();
-            answer += (work * work); 
+        while (!pq.isEmpty()) {
+            int tmp = pq.poll();
+            
+            answer += (tmp * tmp);
         }
         
         return answer;
