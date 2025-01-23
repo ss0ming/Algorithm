@@ -3,27 +3,28 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] operations) {
         int[] answer = {0, 0};
+        PriorityQueue<Integer> pq = new PriorityQueue<>();
+        PriorityQueue<Integer> rPq = new PriorityQueue<>(Collections.reverseOrder());
         
-        List<Integer> list = new LinkedList<>();
         for (int i=0; i<operations.length; i++) {
-            String[] splitOp = operations[i].split(" ");
+            String[] operation = operations[i].split(" ");
+            int n = Integer.parseInt(operation[1]);
             
-            if (splitOp[0].equals("I")) {
-                list.add(Integer.parseInt(splitOp[1]));
-            }
-            
-            if (list.isEmpty()) continue;
-            
-            if (splitOp[0].equals("D") && splitOp[1].equals("1")) {
-                list.remove(list.indexOf(Collections.max(list)));
-            } else if (splitOp[0].equals("D") && splitOp[1].equals("-1")) {
-                list.remove(list.indexOf(Collections.min(list)));
-            }
+            if (operation[0].equals("I")) {
+                pq.add(n);
+                rPq.add(n);
+            } else if (operation[0].equals("D") && n == 1 && !rPq.isEmpty()) {
+                int tmp = rPq.poll();
+                pq.remove(tmp);
+            } else if (operation[0].equals("D") && n == -1 && !pq.isEmpty()) {
+                int tmp = pq.poll();
+                rPq.remove(tmp);
+            } 
         }
         
-        if (!list.isEmpty()) {
-            answer[0] = Collections.max(list);
-            answer[1] = Collections.min(list);
+        if (!pq.isEmpty() && !rPq.isEmpty()) {
+            answer[0] = rPq.poll();
+            answer[1] = pq.poll();
         }
         
         return answer;
