@@ -1,10 +1,10 @@
 # [level 1] 둘만의 암호 - 155652 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/155652) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/155652#qna) 
 
 ### 성능 요약
 
-메모리: 72.9 MB, 시간: 1.79 ms
+메모리: 94 MB, 시간: 12.89 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 02월 23일 13:17:49
+2025년 02월 01일 17:25:38
 
 ### 문제 설명
 
