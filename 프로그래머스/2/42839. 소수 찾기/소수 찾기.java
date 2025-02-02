@@ -1,53 +1,53 @@
 import java.util.*;
-import java.util.stream.Collectors;
 
 class Solution {
     
-    static Set<Integer> set;
-    static boolean[] visited;
-    static String[] part;
-
+    static int answer = 0;
+    static String nums;
+    static Set<Integer> set = new HashSet<>();
+    
     public int solution(String numbers) {
-        set = new HashSet<>();
-        visited = new boolean[numbers.length()];
-        part = numbers.split("");
+        nums = numbers;
+        String tmp = "";
+        boolean[] visited = new boolean[numbers.length()];
+        
+        dfs(tmp, visited);
 
-        permutation(0, "");
-        return getAnswer();
+        for (int i : set) {
+            check(i);
+        }
+        
+        return answer;
     }
-
-    private void permutation(int index, String sum) {
-        if (!sum.isEmpty()) {
-            set.add(Integer.parseInt(sum));
+    
+    private static void dfs(String tmp, boolean[] visited) {
+        if (!tmp.equals("") && tmp.length() <= nums.length()) {
+            set.add(Integer.parseInt(tmp));
         }
-
-        for (int i = 0; i < part.length; i++) {
-            if (!visited[i]) {
-                visited[i] = true;
-                permutation(index + 1, sum + part[i]);
-                visited[i] = false;
-            }
+        
+        if (tmp.length() == nums.length()) return;
+        
+        for (int i=0; i<nums.length(); i++) {
+            if (visited[i]) continue;
+            visited[i] = true;
+            dfs(tmp, visited);
+            dfs(tmp+nums.charAt(i), visited);
+            visited[i] = false;
         }
     }
-
-    private int getAnswer() {
-        return set.stream()
-                .filter(this::isPrimeNumber)
-                .collect(Collectors.toList())
-                .size();
-    }
-
-    private boolean isPrimeNumber(int number) {
-        if (number <= 1) {
-            return false;
+    
+    private static void check(int n) {
+        if (n <= 1) {
+            return;
+        } else if (n == 2) {
+            answer++;
+            return;
         }
-
-        for (int i = 2; i <= Math.sqrt(number); i++) {
-            if (number % i == 0) {
-                return false;
-            }
+        
+        for (int i=2; i<=Math.sqrt(n); i++) {
+            if (n % i == 0) return;
         }
-
-        return true;
+        
+        answer++;
     }
 }
