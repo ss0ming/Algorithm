@@ -3,18 +3,23 @@ import java.util.*;
 class Solution {
     public int solution(int[] order) {
         int answer = 0;
-        int idx = 0;
+        int num = 1;
         Stack<Integer> stack = new Stack<>();
         
-        for(int i=1;i<=order.length;i++){
-            stack.push(i);
-            while(!stack.isEmpty()){
-                if(stack.peek()==order[idx]){
-                    stack.pop();
-                    idx++;
-                    answer++;
-                }
-                else break;
+        for (int i=0; i<order.length; i++) {
+            for (int j=num; j<order[i]; j++) {
+                stack.add(j);
+                num++;
+            }
+            
+            if (num == order[i]) {
+                answer++;
+                num++;
+            } else if (!stack.isEmpty() && stack.peek() == order[i]) {
+                stack.pop();
+                answer++;
+            } else {
+                break;
             }
         }
         

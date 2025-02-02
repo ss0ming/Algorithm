@@ -1,10 +1,10 @@
 # [level 2] 택배상자 - 131704 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131704) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/131704#qna) 
 
 ### 성능 요약
 
-메모리: 128 MB, 시간: 161.84 ms
+메모리: 147 MB, 시간: 38.30 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 05월 12일 16:51:15
+2025년 02월 02일 13:28:36
 
 ### 문제 설명
 
