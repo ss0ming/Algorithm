@@ -1,36 +1,41 @@
+import java.util.*;
+
 class Solution {
     public int[] solution(int[] sequence, int k) {
-        int min = Integer.MAX_VALUE;
-        int start = 0;
-        int end   = 0;
-        long cur  = 0;
-        int answer_st = -1;
-        int answer_en = -1; 
-        for(int i = 0; i < sequence.length; i++){
-            end++;
-            cur += sequence[i];
-            if(cur < k) continue;
-            if(cur == k){
-                if(min > end - start + 1){
-                    min = end - start + 1;
-                    answer_st = start;
-                    answer_en = end - 1;
-                }
+        int sum = sequence[0];
+        int left = 0;
+        int right = 0;
+        int len = sequence.length;
+        List<int[]> list = new ArrayList<>();
+
+        while(right < len && left < len) {
+            if (sum == k) {
+                list.add(new int[]{left, right});
             }
-            else{
-                while(cur > k){
-                    cur -= sequence[start++];
+        
+            if (sum <= k) {
+                right++;
+                if (right < len) {
+                    sum += sequence[right];  
                 }
-                if(cur == k){
-                    if(min > end - start + 1){
-                        min = end - start + 1;
-                        answer_st = start;
-                        answer_en = end - 1;
-                    }
-                } 
+            } else {
+                if (left < len) {
+                    sum -= sequence[left];
+                }
+                left++;
             }
         }
-        return new int []{answer_st, answer_en};
+        
+        Collections.sort(list, new Comparator<int[]>() {
+            @Override
+            public int compare(int[] o1, int[] o2) {
+                int len1 = o1[1] - o1[0];
+                int len2 = o2[1] - o2[0];
+                return len1 - len2;
+            }
+        });
+        
+        return list.get(0);
 
     }
 }
