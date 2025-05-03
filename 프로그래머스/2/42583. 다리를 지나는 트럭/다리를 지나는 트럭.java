@@ -2,40 +2,45 @@ import java.util.*;
 
 class Solution {
     public int solution(int bridge_length, int weight, int[] truck_weights) {
- 
-        Queue<Integer> bridge = new LinkedList<>();
-        int passing_truck = 0;
-        
-        int w = 0;
         int answer = 0;
         
-        for (int i=0; i<truck_weights.length; i++) {
-            int truck = truck_weights[i];
+        Queue<Integer> q = new LinkedList<>();
+        
+        int w = 0;
+        int idx = 0;
+        
+        while (idx < truck_weights.length) {
+            int cur = truck_weights[idx];
             
-            while(true) {
-                if (bridge.isEmpty()) {
-                    bridge.add(truck);
-                    w += truck;
-                    answer++;
-                    break;
-                } else if (bridge.size() == bridge_length) {
-                    w -= bridge.poll();
-                } else {
-                    if (w + truck <= weight) {
-                        bridge.add(truck);
-                        w += truck;
-                        answer++;
-                        break;
-                    } else {
-                        bridge.add(0);
-                        answer++;
-                    }
-                    
-                }
+            if (q.size() < bridge_length && w + cur <= weight) {
+                q.add(cur);
+                idx++;
+                w += cur;
+                answer++;
+                continue;
+            } else if (q.size() < bridge_length && w + cur > weight) {
+                q.add(0);
+                answer++;
+                continue;
+            } else {
+                int tmp = q.remove();
+                w -= tmp;
             }
+            
+            if (w + cur <= weight) {
+                q.add(cur);
+                idx++;
+                w += cur;
+            } else {
+                q.add(0);
+            }
+            
+            answer++;
         }
         
-        return answer + bridge_length;
+        answer += (bridge_length-q.size());
+        answer += q.size();
+        
+        return answer;
     }
-    
 }
