@@ -3,26 +3,30 @@ import java.util.*;
 class Solution {
     public int solution(int[] priorities, int location) {
         int answer = 0;
-        Queue<int[]> q = new LinkedList<>();
-        PriorityQueue<Integer> pq = new PriorityQueue<>(Collections.reverseOrder());
+        // 준비
+        PriorityQueue<Integer> pq = new PriorityQueue<>((o1, o2) -> {return o2 - o1;});
+        Queue<Integer> q = new LinkedList<>();
         
-        for (int p=0; p<priorities.length; p++) {
-            q.add(new int[]{priorities[p], p});
-            pq.add(priorities[p]);
+        for (int i=0; i<priorities.length; i++) {
+            pq.add(priorities[i]);
+            q.add(i);
         }
-
-        while (true) {
-            int[] cur = q.poll();
+        
+        // 우선순위 별로 하나씩 빼기
+        int pqNum = pq.poll();
+        while (!q.isEmpty()) {
+            int idx = q.poll();
             
-            if (cur[0] < pq.peek()) {
-                q.add(new int[]{cur[0], cur[1]});
-            } else {
+            if (priorities[idx] == pqNum) {
                 answer++;
-                if (cur[1] == location) {
-                    break;
+                if (!pq.isEmpty()) {
+                    pqNum = pq.poll();
                 }
-                pq.poll();
+                if (idx == location) break;
+            } else {
+                q.add(idx);
             }
+
         }
         
         return answer;
