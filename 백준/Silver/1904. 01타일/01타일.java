@@ -1,24 +1,27 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
-
-    public static void main(String[] args) throws Exception {
-
+class Main {
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int n = Integer.parseInt(br.readLine());
 
-        int N = Integer.parseInt(br.readLine());
-        int[] dp = new int[N+1];
-        long ans = 0;
-
-        dp[0] = 1;
-        dp[1] = 1;
-
-        for (int i=2; i<dp.length; i++) {
-            dp[i] = (dp[i-2] + dp[i-1]) % 15746;
+        if (n == 1) {
+            System.out.println("1");
+            return;
+        } else if (n == 2) {
+            System.out.println("2");
+            return;
         }
 
-        System.out.println(dp[N]);
-    }
+        int[] dp = new int[n+1];
+        dp[1] = 1;
+        dp[2] = 2;
 
+        for (int i=3; i<n+1; i++) {
+            dp[i] = (dp[i-1] + dp[i-2]) % 15746;
+        }
+
+        System.out.println(dp[n]);
+    }
 }
