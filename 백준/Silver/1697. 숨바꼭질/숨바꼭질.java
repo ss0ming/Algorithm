@@ -1,51 +1,49 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+class Main {
 
-    static int[] visited = new int[100_001];
+    static int answer = 0;
+    static int N;
     static int K;
 
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st = new StringTokenizer(br.readLine());
 
-        int N = Integer.parseInt(st.nextToken());
+        N = Integer.parseInt(st.nextToken());
         K = Integer.parseInt(st.nextToken());
 
-        visited[N] = 1;
-        bfs(N);
+        bfs();
 
-        System.out.println(visited[K] - 1);
+        System.out.println(answer);
     }
 
-    public static void bfs(int num) {
+    private static void bfs() {
         Queue<Integer> q = new LinkedList<>();
-        q.add(num);
+        int[] memo = new int[100001];
+        q.add(N);
+        memo[N] = 1;
 
         while (!q.isEmpty()) {
-            int n = q.poll();
-
-            if (n == K) {
+            int cur = q.poll();
+            
+            if (cur == K) {
+                answer = memo[cur] - 1;
                 return;
             }
-            if (n-1 >= 0 && visited[n-1] == 0) {
-                visited[n-1] = (visited[n] + 1);
-                q.add(n-1);
+            if (cur-1 >= 0 && memo[cur-1] == 0) {
+                memo[cur-1] = memo[cur] + 1;
+                q.add(cur-1);
             }
-
-            if (n+1 <= 100000 && visited[n+1] == 0) {
-                visited[n+1] = (visited[n] + 1);
-                q.add(n+1);
+            if (cur+1 <= 100000 && memo[cur+1] == 0) {
+                memo[cur+1] = memo[cur] + 1;
+                q.add(cur+1);
             }
-
-            if (n*2 <= 100000 && visited[n*2] == 0) {
-                visited[n*2] = (visited[n] + 1);
-                q.add(n*2);
+            if (cur*2 <= 100000 && memo[cur*2] == 0) {
+                memo[cur*2] = memo[cur] + 1;
+                q.add(cur*2);
             }
-
         }
     }
-
 }
