@@ -1,76 +1,69 @@
 import java.io.*;
 import java.util.*;
 
-public class Main {
+class Main {
 
-    static int R;
-    static int C;
+    static int N;
+    static int M;
+    static int[][] arr;
+    static boolean[][] visited;
     static int[] dx = {-1, 0, 1, 0};
-    static int[] dy = {0, 1, 0, -1};
+    static int[] dy = {0, -1, 0, 1};
 
-    public static void main(String[] args) throws Exception {
-
+    public static void main(String[] args) throws IOException {
         BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
         StringTokenizer st;
 
         int T = Integer.parseInt(br.readLine());
 
-        for (int t=0; t<T; t++) {
+        for(int t=0; t<T; t++) {
             st = new StringTokenizer(br.readLine());
-            R = Integer.parseInt(st.nextToken());
-            C = Integer.parseInt(st.nextToken());
-            int n = Integer.parseInt(st.nextToken());
+            N = Integer.parseInt(st.nextToken());
+            M = Integer.parseInt(st.nextToken());
+            int K = Integer.parseInt(st.nextToken());
+            arr = new int[N][M];
 
-            int[][] arr = new int[R][C];
-            boolean[][] visited = new boolean[R][C];
-
-            for (int i=0; i<n; i++) {
+            for (int k=0; k<K; k++) {
                 st = new StringTokenizer(br.readLine());
-                int a = Integer.parseInt(st.nextToken());
-                int b = Integer.parseInt(st.nextToken());
-
-                arr[a][b] = 1;
+                int x = Integer.parseInt(st.nextToken());
+                int y = Integer.parseInt(st.nextToken());
+                
+                arr[x][y] = 1;
             }
 
-            int ans = 0;
-
-            for (int i=0; i<R; i++) {
-                for (int j=0; j<C; j++) {
-                    if (arr[i][j] == 0 || visited[i][j]) continue;
-                    visited[i][j] = true;
-                    bfs(i, j, arr, visited);
-                    ans++;
+            visited = new boolean[N][M];
+            int answer = 0;
+            for (int i=0; i<N; i++) {
+                for (int j=0; j<M; j++) {
+                    if (visited[i][j] || arr[i][j] == 0) continue;
+                    bfs(i, j);
+                    answer++;
                 }
             }
-            System.out.println(ans);
+            System.out.println(answer);
         }
     }
 
-    public static void bfs(int a, int b, int[][] arr, boolean[][] visited) {
+    private static void bfs(int x, int y) {
         Queue<int[]> q = new LinkedList<>();
-        q.add(new int[]{a, b});
+        q.add(new int[]{x, y});
+        visited[x][y] = true;
 
-        while (!q.isEmpty()) {
-            int[] ab = q.poll();
-            int x = ab[0];
-            int y = ab[1];
+        while(!q.isEmpty()) {
+            int[] cur = q.poll();
 
             for (int i=0; i<4; i++) {
-                int nextX = x + dx[i];
-                int nextY = y + dy[i];
+                int nx = cur[0] + dx[i];
+                int ny = cur[1] + dy[i];
 
-                if (!isPromising(nextX, nextY) || arr[nextX][nextY] == 0 || visited[nextX][nextY]) continue;
-
-                visited[nextX][nextY] = true;
-                q.add(new int[]{nextX, nextY});
+                if (!inRange(nx, ny) || visited[nx][ny] || arr[nx][ny] == 0) continue;
+                visited[nx][ny] = true;
+                q.add(new int[]{nx, ny});
             }
-
-
         }
     }
 
-    public static boolean isPromising(int x, int y) {
-        return x >= 0 && x < R && y >= 0 && y < C;
+    private static boolean inRange(int x, int y) {
+        return x >= 0 && x < N && y >= 0 && y < M;
     }
-
 }
