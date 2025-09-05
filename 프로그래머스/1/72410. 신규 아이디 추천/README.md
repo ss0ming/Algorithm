@@ -1,10 +1,10 @@
 # [level 1] 신규 아이디 추천 - 72410 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/72410) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/72410#qna) 
 
 ### 성능 요약
 
-메모리: 76.3 MB, 시간: 1.30 ms
+메모리: 97.2 MB, 시간: 1.59 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2024년 03월 05일 12:55:43
+2025년 09월 05일 22:46:59
 
 ### 문제 설명
 
