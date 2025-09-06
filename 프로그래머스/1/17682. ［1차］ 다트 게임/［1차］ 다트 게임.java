@@ -1,61 +1,61 @@
+import java.util.*;
+
 class Solution {
     public int solution(String dartResult) {
         int answer = 0;
+        int idx = 0;
+        int i = 0;
+        List<Integer> res = new ArrayList<>();
         
-        String s = "";
-        int n = 0;
-        int flag = 1;
-        int beforeN = 0;
-        
-        for (int i=0; i<dartResult.length(); i++) {
-            char c = dartResult.charAt(i);
-            if (c > 47 && c < 58) {
-                if (flag == 1) {
-                    answer += n;
-                    beforeN = n;
-                    s = "";
-                }
-                s += c;
-                flag = 0;
-            } else if (c == '*') {
-                if (flag == 0) {
-                    n = Integer.parseInt(s);
-                    
-                } 
-                answer -= beforeN;
-                answer += (beforeN*2);
-                n *= 2;
-                flag = 1;
-            } else if (c == '#') {
-                if (flag == 0) {
-                    n = Integer.parseInt(s);
-                } 
-                n *= (-1);
-                flag = 1;
-            } else if (c == 'S') {
-                if (flag == 0) {
-                    n = Integer.parseInt(s);
-                }
-                flag = 1;
-            } else if (c == 'D') {
-                if (flag == 0) {
-                    n = Integer.parseInt(s);
-                } 
-                n = (int)Math.pow(n, 2);
-                flag = 1;
-            } else if (c == 'T') {
-                if (flag == 0) {
-                    n = Integer.parseInt(s);
-                } 
-                n = (int)Math.pow(n, 3);
-                flag = 1;
+        // S 제곱, D 2제곱, T 3제곱
+        // * -> 해당 점수와 바로 전 점수 각각 2배! 첫번째 점수는 해당 점수만!
+        // * 중첩 -> 점수 4배
+        // # -> 해당 점수 마이너스
+        // * 와 # 중첩 -> 점수 -2배
+        while (i < dartResult.length()) {
+            // 숫자부터 파싱
+            int d = 0;
+            if (dartResult.charAt(i+1) >= '0' && dartResult.charAt(i+1) <= '9') {
+                d = Integer.parseInt(dartResult.substring(i, i+2));
+                i += 2;
+            } else {
+                d = Integer.parseInt(dartResult.substring(i, i+1));
+                i += 1;
             }
-            // System.out.println(n);
-            // System.out.println("answer: " + answer);
+            
+            // 몇 제곱인지
+            char c = dartResult.charAt(i);
+            if (c == 'D') {
+                d = (int) Math.pow(d, 2);
+            } else if (c == 'T') {
+                d = (int) Math.pow(d, 3);
+            }
+            i++;
+            
+            // 옵션 확인
+            if (dartResult.length() <= i) {
+                res.add(d);
+                break;
+            }
+            c = dartResult.charAt(i);
+            if (c == '*') {
+                d *= 2;
+                if (idx != 0) {
+                    res.set(idx-1, res.get(idx-1) * 2);
+                }
+                i++;
+            } else if (c == '#') {
+                d *= (-1);
+                i++;
+            }
+            
+            res.add(d);
+            idx++;
         }
         
-        answer += n;
-        
+        for (int r=0; r<res.size(); r++) {
+            answer += res.get(r);
+        }
         return answer;
     }
 }
