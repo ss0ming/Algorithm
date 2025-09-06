@@ -3,38 +3,38 @@ import java.util.*;
 class Solution {
     public int[] solution(int N, int[] stages) {
         int[] answer = new int[N];
-        
-        int[] successStage = new int[N+2];
-        int usersN = stages.length;
-        HashMap<Integer, Double> map = new HashMap<>();
+        Map<Integer, Integer> map = new HashMap<>();        
+        for (int i=1; i<=N+1; i++) {
+            map.put(i, 0);
+        }
         
         for (int i=0; i<stages.length; i++) {
-            successStage[stages[i]]++;
+            int stg = stages[i];
+            map.put(stg, map.get(stg) + 1);
         }
         
-        // System.out.println(Arrays.toString(successStage));
+        int user = stages.length;
+        double[][] res = new double[N][2];
+        for (int i=1; i<=N; i++) {
+            res[i-1][0] = i;
+            if (user == 0) res[i-1][1] = 0;
+            else res[i-1][1] = (double) map.get(i)/user;
+            user -= map.get(i);
+        }
         
-        for (int i=1; i<N+1; i++) {
-            double failureRate = 0;
-            if (successStage[i] != 0) {
-                failureRate = (double)successStage[i]/usersN;
+        Arrays.sort(res, (o1, o2) -> {
+            if (o1[1] == o2[1]) {
+                return (int) (o1[0] - o2[0]);
             }
-            map.put(i, failureRate);
-            usersN -= successStage[i];
-            // System.out.println(usersN);
+            if (o2[1] - o1[1] > 0) {
+                return 1;
+            }
+            return -1;
+        });
+        
+        for (int i=0; i<N; i++) {
+            answer[i] = (int) res[i][0];
         }
-
-        // System.out.println("개수: " + map.size());
-        
-        List<Integer> list = new ArrayList<>(map.keySet());
-        Collections.sort(list, (o1, o2) -> Double.compare(map.get(o2), map.get(o1)));
-        
-        int idx = 0;
-        
-        for (Integer i : list) {
-            answer[idx++] = i;
-        }
-        
         
         return answer;
     }
