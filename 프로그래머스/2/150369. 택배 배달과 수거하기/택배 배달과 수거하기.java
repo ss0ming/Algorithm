@@ -1,43 +1,32 @@
 import java.util.*;
 
 class Solution {
+    
     public long solution(int cap, int n, int[] deliveries, int[] pickups) {
         long answer = 0;
-        int dIdx = n - 1;
-        int pIdx = n - 1;
         
-        while (dIdx >= 0 || pIdx >= 0) {
-            while (dIdx >= 0 && deliveries[dIdx] == 0) dIdx--;
-            while (pIdx >= 0 && pickups[pIdx] == 0) pIdx--;
-            if (dIdx < 0 && pIdx < 0) break;
+        for (int i=n-1; i>=0; i--) {
+            while (deliveries[i] > 0 || pickups[i] > 0) {
+                calc(i, deliveries, cap);
+                calc(i, pickups, cap);
 
-            answer += (Math.max(dIdx, pIdx) + 1) * 2;
- 
-            int dCap = cap;
-            while (dIdx >= 0 && dCap > 0) {
-                if (deliveries[dIdx] <= dCap) {
-                    dCap -= deliveries[dIdx];
-                    deliveries[dIdx] = 0;
-                    dIdx--;
-                } else {
-                    deliveries[dIdx] -= dCap;
-                    dCap = 0;
-                }
-            }
-            
-            int pCap = cap;
-            while (pIdx >= 0 && pCap > 0) {
-                if (pickups[pIdx] <= pCap) {
-                    pCap -= pickups[pIdx];
-                    pickups[pIdx] = 0;
-                    pIdx--;
-                } else {
-                    pickups[pIdx] -= pCap;
-                    pCap = 0;
-                }
+                answer += (i+1) * 2;
             }
         }
         
         return answer;
+    }
+    
+    private static void calc(int idx, int[] arr, int cap) {
+        for (int i=idx; i>=0; i--) {
+            if (arr[i] == 0) continue;
+            if (arr[i] >= cap) {
+                arr[i] -= cap;
+                return;
+            } else {
+                cap -= arr[i];
+                arr[i] = 0;
+            }
+        }
     }
 }
