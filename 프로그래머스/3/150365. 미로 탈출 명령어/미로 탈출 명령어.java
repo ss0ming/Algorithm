@@ -4,54 +4,33 @@ class Solution {
 
     static int[] dx = {1, 0, 0, -1};
     static int[] dy = {0, -1, 1, 0};
-    static Character[] dir = {'d', 'l', 'r', 'u'};
-    static String answer = null;
-    static int K;
-    static int N;
-    static int M;
-    static int R;
-    static int C;
-    
-    public String solution(int n, int m, int x, int y, int r, int c, int k) {
-        
-        K = k;
-        N = n;
-        M = m;
-        R = r;
-        C = c;
-        
-        String tmp = "";
-        dfs(x, y, tmp);
-        
-        if (answer == null) {
-            return "impossible";
-        }
+    static String[] dd = {"d", "l", "r", "u"};
+    static String answer = "impossible";
+    static boolean found = false;
 
+    public String solution(int n, int m, int x, int y, int r, int c, int k) {
+        x--; y--;
+        r--; c--;
+        dfs(n, m, x, y, r, c, k, 0, "");
         return answer;
     }
-    
-    private static void dfs(int x, int y, String tmp) {
-        if (answer != null) return;
-        
-        if (tmp.length() == K) {
-            if (R == x && C == y) {
-                answer = tmp;
-            }
+
+    private void dfs(int n, int m, int x, int y, int r, int c, int k, int depth, String route) {
+        if (found) return; // 이미 정답 찾으면 중단
+        int dist = Math.abs(x - r) + Math.abs(y - c);
+        if (dist > k - depth || ((k - depth - dist) % 2 != 0)) return; // 가지치기
+
+        if (x == r && y == c && depth == k) {
+            answer = route;
+            found = true;
             return;
         }
-        
-        int dist = Math.abs(x - R) + Math.abs(y - C);
-        int depth = tmp.length();
-        if ((K - depth) < dist || (K - depth - dist) % 2 != 0) return;
 
-        
-        for (int i=0; i<4; i++) {
-            if (!isPromising(x + dx[i], y + dy[i])) continue;
-            dfs(x + dx[i], y + dy[i], tmp + dir[i]);
+        for (int i = 0; i < 4; i++) {
+            int nx = x + dx[i];
+            int ny = y + dy[i];
+            if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
+            dfs(n, m, nx, ny, r, c, k, depth + 1, route + dd[i]);
         }
-    }
-    
-    private static boolean isPromising(int x, int y) {
-        return x >= 1 && x <= N && y >= 1 && y <= M;
     }
 }
