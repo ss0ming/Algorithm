@@ -1,36 +1,70 @@
 import java.util.*;
 
 class Solution {
+    public class Node {
+        int x;
+        int y;
+        int dis;
+        String route;
+
+        public Node(int x, int y, int dis, String route) {
+            this.x = x;
+            this.y = y;
+            this.dis = dis;
+            this.route = route;
+        }
+    }
 
     static int[] dx = {1, 0, 0, -1};
     static int[] dy = {0, -1, 1, 0};
     static String[] dd = {"d", "l", "r", "u"};
-    static String answer = "impossible";
-    static boolean found = false;
 
     public String solution(int n, int m, int x, int y, int r, int c, int k) {
-        x--; y--;
-        r--; c--;
-        dfs(n, m, x, y, r, c, k, 0, "");
-        return answer;
+        String answer = "impossible";
+
+        PriorityQueue<Node> q = new PriorityQueue<>((o1, o2) -> o1.route.compareTo(o2.route));
+        PriorityQueue<String> pq = new PriorityQueue<>();
+
+        x -= 1; y -= 1;
+        r -= 1; c -= 1;
+
+        q.add(new Node(x, y, 0, ""));
+
+        while (!q.isEmpty()) {
+            Node cur = q.poll();
+
+            // 1️⃣ 종료 조건
+            if (cur.x == r && cur.y == c && cur.dis == k) {
+                pq.add(cur.route);
+                break;
+            }
+
+            // 2️⃣ 이동 횟수 초과 시 중단
+            if (cur.dis >= k) continue;
+
+            for (int i = 0; i < 4; i++) {
+                int nx = cur.x + dx[i];
+                int ny = cur.y + dy[i];
+                if (!inRange(nx, ny, n, m)) continue;
+
+                int newDis = cur.dis + 1;
+                int remain = k - newDis;
+
+                // ✅ 가지치기 로직 추가
+                int manhattan = Math.abs(r - nx) + Math.abs(c - ny);
+                // 남은 이동 횟수로 도달 불가능하거나
+                // 남은 이동 횟수 - 거리 차이가 홀수이면 불가능 (패리티 불일치)
+                if (manhattan > remain || (remain - manhattan) % 2 != 0) continue;
+
+                q.add(new Node(nx, ny, newDis, cur.route + dd[i]));
+            }
+        }
+
+        if (pq.isEmpty()) return answer;
+        return pq.poll();
     }
 
-    private void dfs(int n, int m, int x, int y, int r, int c, int k, int depth, String route) {
-        if (found) return; // 이미 정답 찾으면 중단
-        int dist = Math.abs(x - r) + Math.abs(y - c);
-        if (dist > k - depth || ((k - depth - dist) % 2 != 0)) return; // 가지치기
-
-        if (x == r && y == c && depth == k) {
-            answer = route;
-            found = true;
-            return;
-        }
-
-        for (int i = 0; i < 4; i++) {
-            int nx = x + dx[i];
-            int ny = y + dy[i];
-            if (nx < 0 || ny < 0 || nx >= n || ny >= m) continue;
-            dfs(n, m, nx, ny, r, c, k, depth + 1, route + dd[i]);
-        }
+    private static boolean inRange(int x, int y, int n, int m) {
+        return x >= 0 && x < n && y >= 0 && y < m;
     }
 }
