@@ -1,10 +1,10 @@
 # [level 3] 표현 가능한 이진트리 - 150367 
 
-[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/150367#qna) 
+[문제 링크](https://school.programmers.co.kr/learn/courses/30/lessons/150367) 
 
 ### 성능 요약
 
-메모리: 111 MB, 시간: 64.19 ms
+메모리: 227 MB, 시간: 111.80 ms
 
 ### 구분
 
@@ -16,7 +16,7 @@
 
 ### 제출 일자
 
-2025년 07월 21일 13:37:19
+2025년 10월 07일 15:06:06
 
 ### 문제 설명
 
