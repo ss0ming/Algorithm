@@ -1,38 +1,37 @@
+import java.util.*;
+
 class Solution {
     
-    static int answer = 0;
+    static Set<Long> set = new HashSet<>();
     
     public int solution(int n, int k) {
-        String nk = Integer.toString(n, k);
-        String tmp = "";
+        int answer = 0;
         
-        for (int i=0; i<nk.length(); i++) {
-            Character c = nk.charAt(i);
-            if (c == '0') {
-                check(tmp);
-                tmp = "";
-            } else {
-                tmp += c;
+        String bin = Integer.toString(n, k);
+        String[] split = bin.split("0+");
+        
+        for (int i=0; i<split.length; i++) {
+            if (split[i].isEmpty()) continue;
+            long tmp = Long.parseLong(split[i]);
+            
+            if (set.contains(tmp) || isPrime(tmp)) {
+                answer++;
+                set.add(tmp);
             }
         }
-        check(tmp);
         
         return answer;
     }
     
-    private static void check(String s) {
-        if (s.equals("") || s.equals("1")) return;
-        long n = Long.parseLong(s);
+    private static boolean isPrime(long n) {
+        if (n < 2) return false;
+        if (n == 2) return true;
+        if (n % 2 == 0) return false;
         
-        if (n <= 3) {
-            answer++;
-            return;
-        } 
-        
-        for (int i=2; i<=Math.sqrt(n); i++) {
-            if (n % i == 0) return;
+        for (int i=3; i<=Math.sqrt(n); i+=2) {
+            if (n%i == 0) return false;
         }
         
-        answer++;
+        return true;
     }
 }
