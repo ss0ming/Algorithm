@@ -3,26 +3,29 @@ import java.util.*;
 class Solution {
     public int[] solution(String[] id_list, String[] report, int k) {
         int[] answer = new int[id_list.length];
-        Map<String, Integer> idx = new HashMap<>();
-        List<Set<String>> result = new ArrayList<>();
-        
-        for (int i=0; i<id_list.length; i++) {
-            idx.put(id_list[i], i);
-            result.add(new HashSet<>());
-            
+        Map<String, Set<String>> map = new HashMap<>();
+        Map<String, Integer> mail = new HashMap<>();
+        for(int i=0; i<id_list.length; i++) {
+            map.put(id_list[i], new HashSet<>());
+            mail.put(id_list[i], 0);
         }
         
         for (int i=0; i<report.length; i++) {
-            String[] splitId = report[i].split(" ");
-            
-            result.get(idx.get(splitId[1])).add(splitId[0]);
+            String[] split = report[i].split(" ");
+            map.get(split[1]).add(split[0]);
+        }
+
+        for (int i=0; i<id_list.length; i++) {
+            Set<String> tmp = map.get(id_list[i]);
+            if (tmp.size() >= k) {
+                for (String p : tmp) {
+                    mail.put(p, mail.get(p) + 1);
+                }
+            }
         }
         
-        for (int i=0; i<result.size(); i++) {
-            if (result.get(i).size() < k) continue;
-            for (String id : result.get(i)) {
-                answer[idx.get(id)]++;
-            }
+        for (int i=0; i<id_list.length; i++) {
+            answer[i] = mail.get(id_list[i]);
         }
         
         return answer;
