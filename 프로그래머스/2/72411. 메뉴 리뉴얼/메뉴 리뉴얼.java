@@ -1,46 +1,48 @@
 import java.util.*;
 
 class Solution {
+    
+    static Map<String, Integer> setCnt = new HashMap<>();
+    static int maxCourse = 0;
+    static Map<Integer, Integer> maxCnt = new HashMap<>();
+    
     public String[] solution(String[] orders, int[] course) {
-        List<String> answer = new ArrayList<>();
         
-        for (int i=0; i<course.length; i++) {
-            Map<String, Integer> map = new HashMap<>();
-            int c = course[i];
-            for (int j=0; j<orders.length; j++) {
-                char[] order = orders[j].toCharArray();
-                Arrays.sort(order);
-                dfs(map, "", c, 0, order);
+        for (int c : course) {
+            maxCnt.put(c, 0);
+        }
+        
+        for (int i=0; i<orders.length; i++) {
+            char[] tmp = orders[i].toCharArray();
+            Arrays.sort(tmp);
+            String order = new String(tmp);
+            for (int j=0; j<course.length; j++) {
+                dfs(order, 0, "", 0, course[j]);
             }
-            
-            if (map.size() > 0) {
-                int max = -1;
-                for (String key : map.keySet()) {
-                    if (map.get(key) > 1) {
-                        max = Math.max(max, map.get(key));
-                    }
-                }
-                for (String key : map.keySet()) {
-                    if (max == map.get(key)) {
-                        answer.add(key);
-                    }
-                }
+        }
+        
+        List<String> answer = new ArrayList<>();
+        for (String s : setCnt.keySet()) {
+            int cnt = maxCnt.get(s.length());
+            if (cnt >= 2 && setCnt.get(s) == maxCnt.get(s.length())) {
+                answer.add(s);
             }
         }
         
         Collections.sort(answer);
-        
         return answer.stream().toArray(String[]::new);
     }
     
-    private static void dfs(Map<String, Integer> map, String tmp, int c, int cur, char[] order) {
-        if (tmp.length() == c) {
-            map.put(tmp, map.getOrDefault(tmp, 0)+1);
+    private static void dfs(String s, int idx, String set, int depth, int n) {
+        if (depth == n) {
+            setCnt.put(set, setCnt.getOrDefault(set, 0) + 1);
+            int cnt = Math.max(maxCnt.get(n), setCnt.get(set));
+            maxCnt.put(n, cnt);
             return;
         }
         
-        for (int i=cur; i<order.length; i++) {
-            dfs(map, tmp+order[i], c, i+1, order);
+        for (int i=idx; i<s.length(); i++) {
+            dfs(s, i+1, set + s.charAt(i), depth+1, n);
         }
     }
 }
